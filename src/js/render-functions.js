@@ -39,9 +39,9 @@ export function renderError(message) {
     position: "topRight",
     backgroundColor: "#ef4040",
     messageColor: "#fff",
-    // iconUrl: svgIconUrl,
+    icon: "far fa-circle-xmark",
     iconColor: "#fff"
   });
 }
 
-// const svgIconUrl = '../img/symbol-defs.svg#icon-bi_x-octagon';
+
