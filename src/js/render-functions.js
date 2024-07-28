@@ -1,27 +1,37 @@
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 import iziToast from 'izitoast';
-import "izitoast/dist/css/iziToast.min.css";
+import 'izitoast/dist/css/iziToast.min.css';
+
+const gallery = document.querySelector('.gallery');
+let lightbox;
 
 export function renderGallery(images) {
-  const gallery = document.querySelector('.gallery');
-  const markup = images
-    .map(
-      (image) => `
-        <div class="gallery-item">
-      <a href="${image.largeImageURL}" target="_blank">
-        <img src="${image.webformatURL}" alt="${image.tags}" />
-      </a>
-      <div class="info">
-        <p><strong>Likes:</strong> ${image.likes}</p>
-        <p><strong>Views:</strong> ${image.views}</p>
-        <p><strong>Comments:</strong> ${image.comments}</p>
-        <p><strong>Downloads:</strong> ${image.downloads}</p>
-      </div>
-    </div>
-  `
-    )
-    .join('');
+  clearGallery();
+  const markup = images.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
+    return `
+      <li class="gallery-item">
+        <a href="${largeImageURL}">
+          <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+        </a>
+        <div class="info">
+          <p>Likes: ${likes}</p>
+          <p>Views: ${views}</p>
+          <p>Comments: ${comments}</p>
+          <p>Downloads: ${downloads}</p>
+        </div>
+      </li>
+    `;
+  }).join('');
   gallery.innerHTML = markup;
+  lightbox = new SimpleLightbox('.gallery a');
+  lightbox.refresh();
 }
+
+export function clearGallery() {
+  gallery.innerHTML = '';
+}
+
 
 export function renderError(message) {
   iziToast.error({
@@ -34,9 +44,4 @@ export function renderError(message) {
   });
 }
 
-export function clearGallery() {
-  const gallery = document.querySelector('.gallery');
-  gallery.innerHTML = '';
-}
-
-const svgIconUrl = '../symbol-defs.svg#icon-bi_x-octagon';
+const svgIconUrl = '../img/symbol-defs.svg#icon-bi_x-octagon';
